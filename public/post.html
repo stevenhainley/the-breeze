@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading... — The Breeze</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <a href="index.html" class="back-to-home">&larr; back to home</a>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="theme-icon"></span>
+            </button>
+        </div>
+        <div class="header-main header-main--compact">
+            <a href="index.html" class="masthead masthead--sm">The Breeze</a>
+        </div>
+        <div class="nav-rule"></div>
+    </header>
+
+    <main>
+        <article class="article">
+            <div class="article-header">
+                <span class="article-category" id="post-category"></span>
+                <h1 class="article-title" id="post-title">Loading...</h1>
+                <div class="article-meta" id="post-meta"></div>
+            </div>
+            <div class="article-rule"></div>
+            <div class="article-body" id="post-body">
+                <div class="loading">Loading article...</div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="footer-rule"></div>
+        <div class="footer-content">
+            <span class="footer-logo">The Breeze</span>
+            <span class="footer-copy">&copy; 2026</span>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        (function() {
+            const slug = new URLSearchParams(window.location.search).get('slug');
+            if (!slug) {
+                document.getElementById('post-title').textContent = 'Post not found';
+                document.getElementById('post-body').innerHTML = '<p>This page doesn\'t exist. <a href="index.html">Return home</a>.</p>';
+                return;
+            }
+            fetch('/api/posts/' + encodeURIComponent(slug))
+                .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+                .then(post => {
+                    document.title = post.title + ' — The Breeze';
+                    document.getElementById('post-title').textContent = post.title;
+                    document.getElementById('post-category').textContent = formatCategory(post.category);
+                    document.getElementById('post-meta').innerHTML = '<time>' + formatDate(post.date) + '</time>';
+                    document.getElementById('post-body').innerHTML = marked.parse(post.content);
+                })
+                .catch(() => {
+                    document.getElementById('post-title').textContent = 'Post not found';
+                    document.getElementById('post-body').innerHTML = '<p>This page doesn\'t exist. <a href="index.html">Return home</a>.</p>';
+                });
+        })();
+    </script>
+</body>
+</html>

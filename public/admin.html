@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — The Breeze</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ======== LOGIN ======== -->
+    <div id="view-login" class="admin-view">
+        <div class="admin-login">
+            <h1 class="admin-login-title">The Breeze</h1>
+            <span class="admin-label">// admin</span>
+            <form id="login-form" class="admin-login-form">
+                <input type="text" id="login-user" placeholder="username" autocomplete="username" required>
+                <input type="password" id="login-pass" placeholder="password" autocomplete="current-password" required>
+                <button type="submit">sign in &rarr;</button>
+            </form>
+            <p class="admin-error" id="login-error"></p>
+        </div>
+    </div>
+
+    <!-- ======== DASHBOARD ======== -->
+    <div id="view-dashboard" class="admin-view" style="display:none;">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <span class="admin-brand">The Breeze</span>
+                <span class="admin-label">// admin</span>
+            </div>
+            <div class="admin-header-right">
+                <a href="index.html" class="admin-link">view site &rarr;</a>
+                <button onclick="logout()" class="admin-sign-out">sign out</button>
+            </div>
+        </header>
+        <main class="admin-main">
+            <div class="admin-toolbar">
+                <h2 class="admin-section-title">Posts</h2>
+                <button onclick="showEditor()" class="admin-btn admin-btn-primary">+ New Post</button>
+            </div>
+            <div id="posts-list" class="admin-posts-list"></div>
+        </main>
+    </div>
+
+    <!-- ======== EDITOR ======== -->
+    <div id="view-editor" class="admin-view" style="display:none;">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <a onclick="showDashboard()" class="admin-back">&larr; posts</a>
+            </div>
+            <div class="admin-header-right">
+                <button onclick="logout()" class="admin-sign-out">sign out</button>
+            </div>
+        </header>
+        <main class="admin-main">
+            <div class="editor">
+                <input type="text" id="editor-title" class="editor-title" placeholder="Article title">
+                <div class="editor-meta">
+                    <select id="editor-category" class="editor-select">
+                        <option value="world-news">World News</option>
+                        <option value="tech">Tech</option>
+                        <option value="business">Business</option>
+                        <option value="opinion">Opinion</option>
+                        <option value="culture">Culture</option>
+                        <option value="science">Science</option>
+                    </select>
+                </div>
+                <textarea id="editor-summary" class="editor-summary" placeholder="Brief summary (shown on the homepage)" rows="2"></textarea>
+                <div class="editor-toolbar">
+                    <button type="button" onclick="insertMd('**','**')" title="Bold"><b>B</b></button>
+                    <button type="button" onclick="insertMd('*','*')" title="Italic"><i>I</i></button>
+                    <button type="button" onclick="insertMd('\n## ','\\n')" title="Heading">H2</button>
+                    <button type="button" onclick="insertMd('\n> ','\n')" title="Quote">&ldquo;</button>
+                    <button type="button" onclick="insertMd('\n- ','\n')" title="List">&bull;</button>
+                    <button type="button" onclick="insertMd('[','](url)')" title="Link">&#128279;</button>
+                </div>
+                <textarea id="editor-content" class="editor-content" placeholder="Write your article here using Markdown...
+
+Some quick tips:
+  **bold text**  →  bold text
+  *italic text*  →  italic text
+  ## Heading     →  section heading
+  - item         →  bullet list
+  > quote        →  blockquote
+  [text](url)    →  link" rows="20"></textarea>
+                <div class="editor-actions">
+                    <div class="editor-actions-left">
+                        <button onclick="deleteCurrentPost()" id="editor-delete" class="admin-btn admin-btn-danger" style="display:none;">Delete</button>
+                    </div>
+                    <div class="editor-actions-right">
+                        <button onclick="savePost(false)" class="admin-btn">Save Draft</button>
+                        <button onclick="savePost(true)" class="admin-btn admin-btn-primary">Publish</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
